@@ -1,0 +1,30 @@
+<html
+    style="margin:8px 0; background-color: black; color:white; font-family: Geneva, Tahoma, sans-serif; font-size: 12px;">
+
+<head>
+    <title> seed_filter </title>
+    <script src="seed_filter.js"> </script>
+    <link rel="stylesheet" type="text/css" href="main.css" />
+</head>
+
+<body>
+    <h2> seed filter </h2>
+    <h4> seconds and dates don't work yet. genders don't either </h4>
+    <div> nature(s): <input type="text" name="natures" id="natures" placeholder="adamant lax ..." value="adamant"></input> months: <input type="text"
+            id="months" name="months" value="4 8 12"></div>
+    <div> encounter slot(s): <input type="text" id="slots" placeholder="9 10 ..." value="9 11"></input> days: <input type="text"
+            id="days" value="-1"> </div>
+    <div> ability: <input type="text" id="abilities" placeholder="0 1 any" value="1"></input> hours: <input type="text" id="hours"
+            placeholder="17 18 19" value="-1"> </div>
+    <div> gender(s): <input type="text" id="genders" placeholder="m f any" value="m"></input> seconds: <input type="text"
+            id="seconds" placeholder="5 6 7 8" value="-1"> </div>
+    <div> min/max frame: <input type="text" id="frames" value="60/95"></input> hail? <input type="text" id="hail"
+            value="n"> <br>
+        <button onclick="filter()"> FILTER </button> </div>
+
+    <textarea id="input" rows=10 cols=170 style="resize: none" placeholder="RNG Reporter output"></textarea> <br>
+    <textarea id="output" rows=10 cols=170 style="resize: none" placeholder="Filtered"></textarea>
+
+</body>
+
+</html>
