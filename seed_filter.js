@@ -4,7 +4,16 @@ const BW_VALID_DATES = {
     4: [5, 6, 7, 8, 11, 12, 15, 16, 17, 18, 21, 22, 23, 25, 26, 27, 28, 29],
     8: [3, 4, 5, 6, 7, 12, 13, 14, 15, 16, 17, 20, 21, 22, 25, 26, 27, 28, 31],
     12: [4, 5, 6, 7, 10, 11, 15, 16, 17, 19, 20, 21, 25, 26, 27, 28, 31]
+
 }
+const probabilityTable = [
+    [50, 100, 100, 100, 100],
+    [50, 50, 100, 100, 100],
+    [30, 50, 100, 100, 100],
+    [25, 30, 50, 100, 100],
+    [20, 25, 33, 50, 100],
+    [100, 100, 100, 100, 100]];
+
 function range(start, end) { return [...Array(1 + end - start).keys()].map(v => start + v) } // thanks SO (https://stackoverflow.com/questions/36947847/how-to-generate-range-of-numbers-from-0-to-n-in-es2015-only)
 const ENCOUNTER_SLOTS = { 0: range(0, 19), 1: range(20, 39), 2: range(40, 49), 3: range(50, 59), 4: range(60, 69), 5: range(70, 79), 6: range(80, 84), 7: range(85, 89), 8: range(90, 93), 9: range(94, 97), 10: [98], 11: [99] }
 
@@ -21,6 +30,40 @@ class Seed {
 
         this.stepcount = stepcount
     }
+    calc(rounds) {
+        let count = 0
+        for (let i = 0; i < rounds; i++) {
+            for (let k = 0; k < 6; k++) {
+                for (let j = 0; j < 5; j++) {
+                    if (probabilityTable[k][j] == 100) {
+                        break;
+                    }
+
+                    count++;
+                    this.advance(1)
+                    var rng = Number(((this.current >> 32n) * 101n) >> 32n);
+
+                    if (rng <= probabilityTable[k][j]) {
+                        break;
+                    }
+
+                }
+
+            }
+        }
+        return count
+
+    }
+    calcStarterFrame() {
+        this.calc(2) // initial pidrng calculation, up to new game
+        this.calc(1) // iv rng transition
+        this.advance(2) // juniper says hello
+        this.advance(2) // naming & "creating save data"
+        this.calc(4) // transition from intro to cutscene
+        this.advance(14) // static advancement, white screen in house
+    }
+
+
     step() {
         this.stepcount++
         this.advance(2)
@@ -120,6 +163,7 @@ function filter() {
     var minFrame = frames[0], maxFrame = frames[1]
 
     var bw1 = parseText("bw1", "", x => x.toLowerCase() == "y", "y")[0]
+    var starter = parseText("starter", "", x => x.toLowerCase() == "y", "y")[0]
     var dustCloud = parseText("dustCloud", "", x => x.toLowerCase() == "y", "y")[0]
     var hasDustCloud = false
 
@@ -149,13 +193,17 @@ function filter() {
 
         var seed = new Seed("0x" + data[0], 90)
         var extraSteps = 0, encounterFrame = 0, extraAdvances = 0
-        seed.advance(minFrame)
 
-        for (var j = minFrame; j <= maxFrame; j++) {
+        if (starter)
+            seed.calcStarterFrame();
+        else
+            seed.calc(5)
+
+        for (var j = seed.currentFrame; j <= maxFrame; j++) {
             if (dustCloud && seed.currentFrame <= maxFrame) {
                 if (hasDustCloud) {
                     if (seed.hasDustCloudEncounter() && abilities.includes(seed.getAbility()) && natures.includes(seed.getNature()) && slots.includes(seed.getEncounterSlot(seed.currentFrame - 2))) {
-                        document.getElementById("output").value += INV_NATURES[seed.getNature()] + " ADVANCES: " + (seed.currentFrame - encounterFrame + 3) + " FRAME: " + Number(encounterFrame) + " " +  rawData[i] + "\n" // Forgive me, wartab x2
+                        document.getElementById("output").value += INV_NATURES[seed.getNature()] + " ADVANCES: " + (seed.currentFrame - encounterFrame + 3) + " FRAME: " + Number(encounterFrame) + " " + rawData[i] + "\n" // Forgive me, wartab x2
                         break;
                     }
                     else {
@@ -172,10 +220,16 @@ function filter() {
                     }
                 }
             }
-            else if (!dustCloud) {
+            else if (starter) {
+                if (natures.includes(Number(seed.getNature()))) {
+                    document.getElementById("output").value += INV_NATURES[seed.getNature()] + " FRAME: " + Number(seed.currentFrame) + " " + rawData[i] + "\n" // Forgive me, wartab x2
+                }
+                break;
+            }
+            else {
                 if (seed.hasEncounter(seed.currentFrame - 3)) {
                     if (abilities.includes(Number(seed.getAbility())) && natures.includes(Number(seed.getNature())) && slots.includes(Number(seed.getEncounterSlot(seed.currentFrame - 2)))) {
-                        document.getElementById("output").value += INV_NATURES[seed.getNature()] + " FRAME: " + Number(seed.currentFrame) + " " +  rawData[i] + "\n" // Forgive me, wartab x2
+                        document.getElementById("output").value += INV_NATURES[seed.getNature()] + " FRAME: " + Number(seed.currentFrame) + " " + rawData[i] + "\n" // Forgive me, wartab x2
                         break;
                     }
                 }
