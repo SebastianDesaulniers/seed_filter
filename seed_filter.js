@@ -191,7 +191,7 @@ function filter() {
 
         hasDustCloud = false
 
-        var seed = new Seed("0x" + data[0], 90)
+        var seed = new Seed("0x" + data, 90)
         var extraSteps = 0, encounterFrame = 0, extraAdvances = 0
 
         if (starter)
