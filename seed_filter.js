@@ -180,7 +180,7 @@ function filter() {
     for (var i = 0; i < rawData.length; i++) {
         if (rawData[i].length <= 7 || rawData[i][0] == "S") continue
 
-        var data = rawData[i].split('\t')
+        var data = rawData[i].split('	')
 //        var dates = data[10].split('/'), month = parseInt(dates[0]), day = parseInt(dates[1]), year = parseInt(dates[2].split(' ')[0])
 //        var times = ((data[10].split(' ')).join(':')).split(':'), hour = parseInt(times[1]), minute = parseInt(times[2]), second = parseInt(times[3])
 
