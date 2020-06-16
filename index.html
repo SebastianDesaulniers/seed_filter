@@ -9,22 +9,32 @@
 
 <body>
         <h2> seed filter </h2>
-        <h4> -1 means any/all. genders don't work yet, abilities don't work with dust clouds. everything else works. </h4>
+        <h4> -1 means any/all. genders don't work yet, abilities don't work with dust clouds. everything else works.
+        </h4>
+        <label for="type">type:</label>
+        <select name="type" id="type">
+                <option value="bw1_starter">(BW1) Starter</option>
+                <option value="bw1_wild_encounter">(BW1) Wild Encounter</option>
+                <option value="dust_cloud">(BW1) Dust Cloud</option>
+        </select>
+
+
         <div> nature(s): <input type="text" name="natures" id="natures" placeholder="adamant lax ..."
                         value="adamant"></input> months: <input type="text" id="months" name="months" value="4 8 12">
         </div>
         <div> encounter slot(s): <input type="text" id="slots" placeholder="9 10 ..." value="9 11"></input> days: <input
                         type="text" id="days" value="-1"> </div>
         <div> ability: <input type="text" id="abilities" placeholder="0 1 any" value="1"></input> hours: <input
-                        type="text" id="hours" placeholder="17 18 19" value="-1"> minutes: <input
-                        type="text" id="minutes" placeholder="1 2 3" value="-1"> </div>
+                        type="text" id="hours" placeholder="17 18 19" value="-1"> minutes: <input type="text"
+                        id="minutes" placeholder="1 2 3" value="-1"> </div>
         <div> gender(s): <input type="text" id="genders" placeholder="0 1 2" value="0"></input> seconds: <input
                         type="text" id="seconds" placeholder="5 6 7 8" value="-1"> </div>
-        <div> min/max frame: <input type="text" id="frames" value="60/190"></input> BW1? <input type="text" id="bw1"
-                        value="y"> cloud/shaking grass? <input type="text" id="dustCloud" value="n"> bw1 starter? <input type="text" id="starter" value="n"> <br>
-                <button onclick="filter()"> FILTER </button> </div>
+        min/max frame: <input type="text" id="frames" value="60/190"></input>
 
-        <textarea id="input" rows=10 cols=190 style="resize: none" placeholder="RNG Reporter output"></textarea> <br> <br>
+        <button onclick="filter()"> FILTER </button>
+        <textarea id="input" rows=10 cols=190 style="resize: none" placeholder="RNG Reporter output"></textarea>
+        <br>
+        <br>
         <textarea id="output" rows=30 cols=190 style="resize: none" placeholder="Filtered"></textarea>
 
 </body>
