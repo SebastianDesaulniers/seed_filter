@@ -112,6 +112,10 @@ class Seed {
         let res = this.next(1)
         return Number(((res >> 32n) * 25n) >> 32n)
     }
+    getDustNature() {
+        let res = this.next(2)
+        return Number(((res >> 32n) * 25n) >> 32n)
+    }
 
     getEncounterSlot(n) { // Forgive me, wartab 
         var res = Number((this.frames[n] >> 48n) / 656n)
@@ -173,18 +177,19 @@ function filter() {
     var seconds = parseText("seconds", " ", parseInt, range(0, 59))
 
     var rawData = document.getElementById("input").value.split("\n")
+    
 
     for (var i = 0; i < rawData.length; i++) {
         if (rawData[i].length <= 6 || rawData[i][0] == "S") continue
 
         var data = rawData[i].split('\t')
-        var dates = data[10].split('/'), month = parseInt(dates[0]), day = parseInt(dates[1]), year = parseInt(dates[2].split(' ')[0])
-        var times = ((data[10].split(' ')).join(':')).split(':'), hour = parseInt(times[1]), minute = parseInt(times[2]), second = parseInt(times[3])
+        // // var dates = data[10].split('/'), month = parseInt(dates[0]), day = parseInt(dates[1]), year = parseInt(dates[2].split(' ')[0])
+        // var times = ((data[10].split(' ')).join(':')).split(':'), hour = parseInt(times[1]), minute = parseInt(times[2]), second = parseInt(times[3])
 
-        if (encounterType.includes("bw1") && !BW_VALID_DATES[month].includes(day))
-            continue
-        if (!months.includes(month) || !days.includes(day) || !hours.includes(hour) || !seconds.includes(second) || !minutes.includes(minute))
-            continue;
+        // if (encounterType.includes("bw1") && !BW_VALID_DATES[month].includes(day))
+            // continue
+        // if (!months.includes(month) || !days.includes(day) || !hours.includes(hour) || !seconds.includes(second) || !minutes.includes(minute))
+            // continue;
 
         hasDustCloud = false
 
@@ -200,8 +205,8 @@ function filter() {
         for (var j = seed.currentFrame; j <= maxFrame; j++) {
             if (encounterType == "dust_cloud" && seed.currentFrame <= maxFrame) {
                 if (hasDustCloud) {
-                    if (seed.hasDustCloudEncounter() && abilities.includes(seed.getAbility()) && natures.includes(seed.getNature()) && slots.includes(seed.getEncounterSlot(seed.currentFrame - 2))) {
-                        document.getElementById("output").value += INV_NATURES[seed.getNature()] + " ADVANCES: " + (seed.currentFrame - encounterFrame + 3) + " FRAME: " + Number(encounterFrame) + " " + rawData[i] + "\n" // Forgive me, wartab x2
+                    if (seed.hasDustCloudEncounter() && abilities.includes(seed.getAbility()) && natures.includes(seed.getDustNature()) && slots.includes(seed.getEncounterSlot(seed.currentFrame - 2))) {
+                        document.getElementById("output").value += INV_NATURES[seed.getDustNature()] + " ADVANCES: " + (seed.currentFrame - encounterFrame + 3) + " FRAME: " + Number(encounterFrame) + " " + rawData[i] + "\n" // Forgive me, wartab x2
                         break;
                     }
                     else {
