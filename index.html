@@ -9,13 +9,18 @@
 
 <body>
         <h2> seed filter </h2>
-        <h4> -1 means any/all. genders don't work yet, abilities don't work with dust clouds. everything else works. 
-        </h4>
+        <h4> -1 means any/all. genders don't work yet, dust clouds are mostly broken. everything else works.        </h4>
         <label for="type">type:</label>
         <select name="type" id="type">
                 <option value="bw1_starter">(BW1) Starter</option>
                 <option value="bw1_wild_encounter">(BW1) Wild Encounter</option>
                 <option value="dust_cloud">(BW1) Dust Cloud</option>
+        </select>
+
+       <label for="version">RNG Reporter version:</label>
+       <select name="version" id="version">
+                <option value="custom">RNG Reporter Custom </option>
+                <option value="normal">RNG Reporter 10.3.4</option>
         </select>
 
 
@@ -38,6 +43,5 @@
         <textarea id="output" rows=30 cols=190 style="resize: none" placeholder="Filtered"></textarea>
 
 </body>
-        <h3> <a href="https://twitter.com/wartabPSR/status/1289943408983920641"> important tweet </a> </h3>
 
 </html>
