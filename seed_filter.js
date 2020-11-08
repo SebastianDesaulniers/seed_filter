@@ -135,6 +135,15 @@ class Seed {
         return (this.frames[n] >> 48n) / 656n <= 8n
     }
 
+    pickup(low, high) {
+        if (this.current * 100n >> 32n < 10n) {
+            let item = this.next(1) * 100n >> 32n;
+            console.log(item)
+            if (item >= low && item <= high)
+                return item
+        }
+    }
+
 }
 
 function parseText(id, key, func, def) {
@@ -154,6 +163,8 @@ function filter() {
     for (var i = 0; i < natures.length; i++) {
         natures[i] = NATURES[natures[i].toLowerCase()]
     }
+
+    var version = document.getElementById("version").value
 
     var slots = parseText("slots", " ", parseInt, range(0, 11))
     var abilities = parseText("abilities", " ", parseInt, [0, 1])
@@ -178,8 +189,10 @@ function filter() {
         if (rawData[i].length <= 6 || rawData[i][0] == "S") continue
 
         var data = rawData[i].split('\t')
-        var dates = data[10].split('/'), month = parseInt(dates[0]), day = parseInt(dates[1]), year = parseInt(dates[2].split(' ')[0])
-        var times = ((data[10].split(' ')).join(':')).split(':'), hour = parseInt(times[1]), minute = parseInt(times[2]), second = parseInt(times[3])
+        var dateOffset = version == "custom" ? 17 : 10;
+
+        var dates = data[dateOffset].split('/'), month = parseInt(dates[0]), day = parseInt(dates[1]), year = parseInt(dates[2].split(' ')[0])
+        var times = ((data[dateOffset].split(' ')).join(':')).split(':'), hour = parseInt(times[1]), minute = parseInt(times[2]), second = parseInt(times[3])
 
         if (encounterType.includes("bw1") && !BW_VALID_DATES[month].includes(day))
             continue
